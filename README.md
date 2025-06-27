@@ -1,11 +1,11 @@
 # 智慧房地產系統
 
-**智慧房地產系統** 是一個領先的房地產科技（PropTech）解決方案，結合 AI、大數據和微服務架構，推動傳統房地產產業的數位轉型。本系統提供房價預測、自動化文案生成和建案管理功能，支援 B2B 訂閱制 SaaS 模式與 B2C 銷售平台，與 BitStone 點炻科技的商業模式高度契合。採用模組化設計與 Docker 容器化部署，系統具備高可擴展性，適合與知名 PropTech 企業合作，共同打造房地產科技生態圈。
+**智慧房地產系統** 是一個先進的房地產科技（PropTech）解決方案，結合 AI、大數據和微服務架構，推動傳統房地產產業的數位轉型。本系統提供房價預測、自動化文案生成和建案管理功能，支援 B2B 訂閱制 SaaS 模式與 B2C 銷售平台，適用於房地產企業、開發商和最終用戶。採用模組化設計與 Docker 容器化部署，系統具備高可擴展性，適合與 PropTech 企業合作，打造房地產科技生態圈。
 
 ## 功能特性
 
 - **AI 驅動房價預測**：利用 XGBoost 機器學習模型，基於面積、地址等特徵提供精準房價預測，支援 B2C 買家決策與 B2B 市場分析。
-- **自動化文案生成**：整合 OpenAI API 或模擬邏輯，生成吸引人的建案行銷文案，優化 B2B 行銷效率與 B2C 用戶體驗。
+- **自動化文案生成**：整合 OpenAI API 或模擬邏輯，生成吸引人的建案行銷文案，優化行銷效率與用戶體驗。
 - **建案管理**：提供分頁式建案列表、詳情檢視和 Google Maps 地圖整合，簡化房地產資訊管理。
 - **B2B SaaS 模式**：模組化 API 設計，支援訂閱制服務，易於與企業客戶的現有系統整合。
 - **安全性與合規性**：API 金鑰驗證、CORS 配置和環境變數管理，確保資料安全與合規。
@@ -22,7 +22,7 @@
 
 ## 系統架構
 
-本系統採用微服務架構，所有組件運行於 Docker 容器中，確保環境一致性與可擴展性。以下是修正後的系統互動流程圖（使用短橫線避免中文圓括號）：
+本系統採用微服務架構，所有組件運行於 Docker 容器中，確保環境一致性與可擴展性。以下是系統互動流程圖：
 
 ```mermaid
 graph TD
@@ -46,7 +46,7 @@ graph TD
 
 ## 關鍵代碼範例
 
-以下是帶有詳細註解的關鍵代碼片段，展示系統的核心功能，突顯技術實力以吸引 BitStone 的技術團隊。
+以下是帶有詳細註解的關鍵代碼片段，展示系統的核心功能，突顯技術實力以吸引 PropTech 企業的技術團隊。
 
 ### 前端：建案列表組件（Vue.js）
 
@@ -243,7 +243,7 @@ class PropertyController extends Controller
 
 ### AI 服務：房價預測（FastAPI）
 
-位於 `ai-services-fastapi/routers/predict.py`，展示 AI 驅動的房價預測邏輯，吸引 BitStone 的技術團隊。
+位於 `ai-services-fastapi/routers/predict.py`，展示 AI 驅動的房價預測邏輯，吸引 PropTech 企業的技術團隊。
 
 ```python
 from fastapi import APIRouter, HTTPException
@@ -338,7 +338,7 @@ def predict_price(data: PredictionRequest):
 
 ## 快速開始
 
-**注意**：本倉庫僅包含核心代碼（前端、AI 服務、資料庫結構、後端控制器等），不包含完整的 Laravel 框架代碼。使用者需自行安裝 Laravel 並將核心代碼整合至 Laravel 專案。以下為完整安裝與部署步驟，確保與 BitStone 的技術團隊對接時能快速展示成果。
+**注意**：本倉庫僅包含核心代碼（前端、AI 服務、資料庫結構、後端控制器等），不包含完整的 Laravel 框架代碼。使用者需自行安裝 Laravel 並將核心代碼整合至 Laravel 專案。以下為完整安裝與部署步驟，確保快速展示成果。
 
 ### 前置條件
 
@@ -379,7 +379,7 @@ def predict_price(data: PredictionRequest):
      ```bash
      cp .env.example .env
      ```
-   - 編輯 `.env` 檔案，設置以下關鍵變數（與 BitStone 的 SaaS 模式相容）：
+   - 編輯 `.env` 檔案，設置以下關鍵變數：
      ```env
      API_KEY_SECRET=your_api_key_secret
      AI_SERVICE_INTERNAL_API_KEY=your_ai_service_key
@@ -434,7 +434,139 @@ def predict_price(data: PredictionRequest):
 - **房價預測**：`POST /predict/price`（AI 服務，支援 B2B 與 B2C）
 - **健康檢查**：`GET /api/health`
 
-所有後端 API 請求需包含 `X-API-KEY` 標頭，AI 服務 API 需包含 `X-API-KEY`（內部金鑰），確保安全且符合 BitStone 的合規需求。
+所有後端 API 請求需包含 `X-API-KEY` 標頭，AI 服務 API 需包含 `X-API-KEY`（內部金鑰），確保安全性和合規性。
+
+## FAQ
+
+以下是針對開發者的常見問題與解答，幫助技術團隊快速了解專案架構與實作細節。
+
+### 這個專案的整體架構和核心功能是什麼？
+
+本專案採用微服務架構，包含三個核心服務：前端（Vue.js 3）、後端（Laravel 11）和 AI 服務（FastAPI）。所有服務透過 Docker 容器化部署，由 Docker Compose 管理，確保環境一致性與可擴展性。核心功能包括：
+
+- **房產管理**：提供分頁式建案列表、詳情檢視，整合 Google Maps 展示位置資訊。
+- **AI 房價預測**：使用 XGBoost 模型，基於面積、地址等特徵進行精準房價預測，支援 B2C 買家與 B2B 分析。
+- **自動化文案生成**：整合 OpenAI API，生成吸引人的建案行銷文案，提升行銷效率。
+- **安全性與監控**：實現 API 金鑰驗證與健康檢查端點，確保系統安全與穩定。
+
+微服務架構允許各服務獨立開發與部署，提升靈活性與擴展性，適合 PropTech 應用場景。
+
+### 為什麼選擇微服務架構？有哪些優勢與挑戰？
+
+選擇微服務架構是為了實現高可擴展性、獨立部署與技術異構性。具體優勢包括：
+
+- **獨立開發與部署**：各服務可由不同團隊獨立維護，互不干擾，加速開發週期。
+- **技術靈活性**：AI 服務使用 Python/FastAPI 適應機器學習需求，後端使用 PHP/Laravel 處理業務邏輯。
+- **可擴展性**：可針對高負載服務（如 AI 預測）單獨擴展，不影響其他組件。
+
+挑戰包括：
+
+- **服務間通訊**：需處理 API 路由、錯誤處理與金鑰驗證，增加複雜性。
+- **資料一致性**：微服務間的資料同步與事務管理需謹慎設計。
+- **監控需求**：需要集中化日誌與監控系統來追蹤問題。
+
+### Docker 和 Docker Compose 在專案中如何應用？
+
+Docker 和 Docker Compose 是專案的核心部署工具：
+
+- **環境一致性**：Docker 通過 Dockerfile 定義每個服務的運行環境，確保開發、測試與生產環境一致，避免「在我機器上能跑」的問題。
+- **環境隔離**：各服務運行於獨立容器，防止依賴衝突。
+- **簡化部署**：`docker-compose.yml` 定義服務間關係、埠映射與網路配置，通過單一命令 `docker-compose up -d` 即可啟動所有服務，簡化部署流程並加速新開發者上手。
+
+### 在前端（HomePage.vue）中，如何處理建案列表的載入狀態、錯誤處理與分頁？
+
+在 `frontend/src/pages/HomePage.vue` 中，使用 Vue 3 的 `ref` 管理響應式狀態：
+
+- **載入狀態**：透過 `isLoading` 追蹤資料載入，顯示「正在載入…」提示，提升用戶體驗。
+- **錯誤處理**：使用 `try-catch` 捕獲 `axios` 請求錯誤，將錯誤訊息存於 `error` 狀態，並以統一的 `error-alert` 樣式展示。
+- **分頁**：後端 API 提供分頁元數據（`current_page`、`total` 等），前端動態渲染分頁按鈕，支援「上一頁/下一頁」功能，並根據狀態禁用按鈕，確保流暢的用戶體驗。
+
+### 為什麼在前端圖片標籤中使用 onerror 處理？如何進一步優化圖片載入？
+
+在 `<img>` 標籤中添加 `onerror="this.onerror=null;this.src='https://placehold.co/800x600/E0F2F7/4299E1?text=無圖片';"`，確保圖片載入失敗時顯示占位圖，避免破碎圖標，提升視覺體驗。`this.onerror=null` 防止無限循環報錯。
+
+其他優化方式包括：
+
+- **懶載入**：使用 `loading="lazy"` 或 Intersection Observer API，減少初始載入時間。
+- **響應式圖片**：透過 `<picture>` 與 `srcset` 提供不同尺寸的圖片，適應設備需求。
+- **圖片壓縮**：採用 WebP 格式或壓縮工具，降低檔案大小。
+- **CDN 加速**：使用內容分發網路提升圖片載入速度。
+
+### 在 Laravel 後端，如何實現 API 金鑰驗證？為什麼選擇 Middleware？
+
+API 金鑰驗證透過自定義的 `ApiKeyMiddleware` 實現，應用於需要保護的路由：
+
+- **統一邏輯**：Middleware 在請求進入 Controller 前驗證金鑰，遵循 DRY 原則，避免重複代碼。
+- **安全性**：提前攔截未授權請求，降低業務邏輯層風險。
+- **可維護性**：驗證邏輯集中於 Middleware，便於未來修改（如切換 Redis 驗證）。
+
+### /health 端點如何運作？為什麼模擬 AI 服務輸入？
+
+`/health` 端點檢查後端與依賴服務的狀態：
+
+- **資料庫連線**：驗證 MySQL PDO 連線是否正常。
+- **AI 服務功能**：模擬真實輸入（如面積、地址）呼叫 `/predict/price`，確保 AI 服務不僅可達，且核心預測功能正常。
+
+模擬真實輸入的目的是進行深度健康檢查，及早發現模型載入失敗或邏輯錯誤，確保系統穩定性。
+
+### 在 AI 服務中，如何處理模型載入與失效情況？
+
+在 `ai-services-fastapi/routers/predict.py` 中，使用 `joblib` 載入 XGBoost 模型：
+
+- **載入流程**：透過 `try-except` 檢查 `model_xgb.pkl` 是否存在並可載入。
+- **失效處理**：若模型檔案缺失或載入失敗，記錄警告日誌並切換至模擬預測邏輯，確保服務不中斷。
+- **設計考量**：模擬邏輯保證服務可用性，同時日誌記錄便於運維排查問題，適合生產環境的穩定性需求。
+
+### FastAPI 的 API 金鑰驗證與 Laravel 有何不同？為什麼需要兩層驗證？
+
+- **Laravel 驗證**：保護前端與外部客戶端的 API 請求，確保授權訪問。
+- **FastAPI 驗證**：作為內部服務間安全層，驗證來自 Laravel 的請求，防止未授權直接呼叫。
+
+兩層驗證實現了多層次安全防禦，確保即使後端被攻破，AI 服務仍受保護。同時，細粒度金鑰允許未來針對不同服務設置獨立策略。
+
+### 為什麼在資料庫中添加 idx_area_price 複合索引？
+
+`idx_area_price` 複合索引優化 `properties` 表的查詢效率：
+
+- **好處**：加速 `WHERE area > X AND price < Y` 或 `ORDER BY price` 的查詢，減少全表掃描。
+- **設計原則**：根據常見查詢模式（WHERE、JOIN、ORDER BY）與欄位基數選擇索引，平衡查詢性能與儲存成本。
+
+### schema.sql 與 php artisan migrate --seed 的關係與區別？
+
+- **schema.sql**：複製至 `/docker-entrypoint-initdb.d/`，由 MySQL 容器首次啟動時自動執行，快速初始化資料庫結構與資料，適合測試或 CI/CD。
+- **php artisan migrate --seed**：Laravel 的遷移工具，支援版本控制與增量更新，適用於生產環境的資料庫管理。
+- **聯繫**：兩者均用於初始化，但 `migrate --seed` 更適合長期維護，`schema.sql` 提供快速部署選項。
+
+### 實現 B2B SaaS 模式與企業版計費需要考慮什麼？
+
+- **多租戶架構**：選擇共享 Schema（透過 `tenant_id` 區分）或獨立資料庫，確保資料隔離。
+- **權限與配額**：實現 RBAC 與 API 限流，支援不同訂閱層級。
+- **計費整合**：使用 Stripe 或 Paddle 處理訂閱與發票。
+- **可配置性**：提供動態表單或儀表板，滿足企業自定義需求。
+- **安全性與合規**：支援數據加密、日誌審計，符合 GDPR 等規範。
+- **擴展性**：引入負載均衡與消息隊列，應對高流量。
+
+### 如何確保程式碼品質與可維護性？
+
+- **最佳實踐**：遵循 MVC（Laravel）、組件化（Vue.js）、RESTful（FastAPI）規範。
+- **模組化**：清晰的目錄結構與職責分離。
+- **註解與日誌**：詳細註解核心邏輯，記錄錯誤與關鍵操作。
+- **工具**：使用 ESLint、PHP-CS-Fixer 確保程式碼風格一致。
+- **環境管理**：透過 `.env` 管理敏感資訊，避免硬編碼。
+
+### 未來擴展計劃有哪些？
+
+- **功能擴展**：
+  - 引入 Laravel Sanctum 實現用戶認證。
+  - 開發高級分析儀表板，展示市場趨勢與用戶行為。
+  - 整合 VR/AR 線上賞屋，提升 B2C 體驗。
+  - 實現基於機器學習的房產推薦系統。
+- **技術優化**：
+  - 使用 Redis 快取與消息隊列（如 RabbitMQ）提升性能。
+  - 配置負載均衡與自動擴展，支援高併發。
+- **AI 增強**：
+  - 整合多源數據（政府數據、社群媒體）豐富模型。
+  - 建立 MLOps 流水線，實現模型自動化訓練與部署。
 
 ## 專案結構
 
@@ -479,7 +611,7 @@ smart-realestate-system/
 ## 問題排除
 
 - **Mermaid 圖表無法渲染**：
-  - 確認節點名稱使用短橫線（`-`）而非中文圓括號 `( )`，以符合 GitHub Mermaid 語法規範。[](https://en.wikipedia.org/wiki/Property_technology)
+  - 確認節點名稱使用短橫線（`-`）而非中文圓括號 `( )` 或大括號 `{}`，以符合 GitHub Mermaid 語法規範。
   - 參考 [GitHub Mermaid 文件](https://docs.github.com/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#creating-mermaid-diagrams)。
 - **Laravel 框架缺失**：
   - 確認已安裝 Laravel 並將倉庫中的核心代碼（`app/`, `database/`, `routes/`）正確複製到 Laravel 專案。
@@ -499,13 +631,6 @@ smart-realestate-system/
 
 詳細問題排除請參考 [docs/setup.md](docs/setup.md)。
 
-## 未來擴展
-
-- **SaaS 模式強化**：支援多層訂閱計費（基礎版、專業版、企業版），與 BitStone 的 B2B 模式對接。
-- **新功能**：新增用戶認證（Laravel Sanctum）、高級分析儀表板、VR/AR 線上賞屋，增強 B2C 平台吸引力。
-- **效能優化**：整合 Redis 快取、負載均衡，支援 BitStone 的高流量需求。
-- **區塊鏈整合**：探索區塊鏈技術用於土地產權記錄，與 BitStone 的創新技術方向一致。[](https://iaps.ord.nycu.edu.tw/%25E3%2580%2590article%25E3%2580%2591%25E6%259D%25B1%25E4%25BA%259E%25E9%2580%258F%25E8%25A6%2596%25E9%258F%25A1%25EF%25BC%259A%25E6%2588%25BF%25E5%259C%25B0%25E7%2594%25A2-x-%25E6%2595%25B8%25E4%25BD%258D%25E8%25BD%2589%25E5%259E%258B-%25E5%2586%2589%25E5%2586%2589%25E5%258D%2587%25E8%25B5%25B7%25E7%259A%2584-proptech/)
-
 ## 貢獻
 
 歡迎提交問題報告或功能建議！請遵循以下步驟：
@@ -514,16 +639,3 @@ smart-realestate-system/
 2. 提交變更（`git commit -m "Add your feature"`）。
 3. 推送到分支（`git push origin feature/your-feature`）。
 4. 建立 Pull Request。
-
-## 聯繫方式
-
-如有合作意向（技術整合、投資或白標解決方案），請聯繫：  
-📧 [contact@smart-realestate.com](mailto:contact@smart-realestate.com)
-
-## 授權
-
-本專案採用 MIT 授權。詳情請見 [LICENSE](LICENSE) 文件。
-
----
-
-*最後更新：2025-06-27*
