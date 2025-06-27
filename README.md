@@ -1,15 +1,15 @@
 # 智慧房地產系統
 
-**智慧房地產系統** 是一個基於數據驅動的現代化平台，旨在透過人工智慧技術革新傳統房地產產業。本系統整合了建案管理、房價預測和自動化文案生成功能，適用於 B2C（個人用戶）和 B2B（企業客戶）場景。採用微服務架構，包含前端（Vue.js）、後端（Laravel）、AI 服務（FastAPI）和資料庫（MySQL），所有服務均透過 Docker 容器化運行。
+**智慧房地產系統** 是一個領先的房地產科技（PropTech）解決方案，結合 AI、大數據和微服務架構，推動傳統房地產產業的數位轉型。本系統提供房價預測、自動化文案生成和建案管理功能，支援 B2B 訂閱制 SaaS 模式與 B2C 銷售平台，與 BitStone 點炻科技的商業模式高度契合。採用模組化設計與 Docker 容器化部署，系統具備高可擴展性，適合與知名 PropTech 企業合作，共同打造房地產科技生態圈。
 
 ## 功能特性
 
-- **房價預測**：根據房屋面積、地址等資訊，利用機器學習模型（XGBoost）進行房價預測。
-- **自動文案生成**：透過 AI（例如 OpenAI API 或模擬邏輯）生成吸引人的建案行銷文案。
-- **建案管理**：提供建案列表瀏覽、詳細資訊檢視、支援分頁和 Google Maps 地圖整合。
-- **模組化架構**：基於微服務設計，透過 Docker Compose 管理容器化服務。
-- **安全性**：實現 API 金鑰驗證、CORS 配置和環境變數管理。
-- **可擴展性**：支援 SaaS 模式，易於添加新功能或整合第三方服務。
+- **AI 驅動房價預測**：利用 XGBoost 機器學習模型，基於面積、地址等特徵提供精準房價預測，支援 B2C 買家決策與 B2B 市場分析。
+- **自動化文案生成**：整合 OpenAI API 或模擬邏輯，生成吸引人的建案行銷文案，優化 B2B 行銷效率與 B2C 用戶體驗。
+- **建案管理**：提供分頁式建案列表、詳情檢視和 Google Maps 地圖整合，簡化房地產資訊管理。
+- **B2B SaaS 模式**：模組化 API 設計，支援訂閱制服務，易於與企業客戶的現有系統整合。
+- **安全性與合規性**：API 金鑰驗證、CORS 配置和環境變數管理，確保資料安全與合規。
+- **容器化部署**：透過 Docker Compose 實現一致性部署，支援快速擴展與雲端整合。
 
 ## 技術棧
 
@@ -22,11 +22,11 @@
 
 ## 系統架構
 
-本系統採用模組化微服務架構，所有組件運行於 Docker 容器中，確保環境一致性和可擴展性。以下是修正後的系統互動流程圖（避免中文圓括號）：
+本系統採用微服務架構，所有組件運行於 Docker 容器中，確保環境一致性與可擴展性。以下是修正後的系統互動流程圖（使用短橫線避免中文圓括號）：
 
 ```mermaid
 graph TD
-    A[使用者-瀏覽器] -->|GET / Web介面| B[前端服務-Vue.js/Nginx]
+    A[使用者-瀏覽器] -->|GET / Web介面| B[前端服務-Vue.js-Nginx]
     B -->|GET /api/properties| C[後端服務-Laravel]
     C -->|SELECT FROM properties| D[MySQL-資料庫]
     B -->|POST /predict/price| E[AI服務-FastAPI]
@@ -46,18 +46,18 @@ graph TD
 
 ## 關鍵代碼範例
 
-以下是帶有詳細註解的關鍵代碼片段，展示系統的核心功能。
+以下是帶有詳細註解的關鍵代碼片段，展示系統的核心功能，突顯技術實力以吸引 BitStone 的技術團隊。
 
 ### 前端：建案列表組件（Vue.js）
 
-此代碼位於 `frontend/src/pages/HomePage.vue`，展示如何從後端獲取建案列表並實現分頁功能。
+位於 `frontend/src/pages/HomePage.vue`，展示如何從後端獲取建案列表並實現分頁功能，支援 B2C 用戶體驗。
 
 ```vue
 <template>
   <div class="homepage">
     <h1 class="text-4xl font-extrabold text-gray-900 mb-8 text-center">建案列表</h1>
 
-    <!-- 顯示載入中狀態 -->
+    <!-- 顯示載入中狀態，提升用戶體驗 -->
     <div v-if="isLoading" class="text-center text-gray-600 py-10">
       <p class="text-xl font-semibold">正在載入建案資料...</p>
       <div class="mt-4 animate-pulse">
@@ -65,13 +65,13 @@ graph TD
       </div>
     </div>
 
-    <!-- 顯示錯誤訊息 -->
+    <!-- 顯示錯誤訊息，確保錯誤處理清晰 -->
     <div v-if="error" class="error-alert mb-8">
       <strong class="font-bold">載入建案失敗:</strong>
       <span class="block sm:inline">{{ error }}</span>
     </div>
 
-    <!-- 顯示建案卡片列表 -->
+    <!-- 建案卡片列表，支援響應式設計 -->
     <div v-if="!isLoading && !error && properties.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div v-for="property in properties" :key="property.id" class="card bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 duration-300">
         <router-link :to="`/properties/${property.id}`">
@@ -90,7 +90,7 @@ graph TD
       </div>
     </div>
 
-    <!-- 分頁控制 -->
+    <!-- 分頁控制，支援動態頁數切換 -->
     <div v-if="totalPages > 1" class="pagination-controls flex flex-col sm:flex-row justify-between items-center mt-12 space-y-4 sm:space-y-0">
       <div class="flex items-center space-x-2">
         <button
@@ -134,7 +134,7 @@ const totalPages = ref(1); // 總頁數
 const totalRecords = ref(0); // 總記錄數
 const perPage = ref(10); // 每頁記錄數
 
-// 從後端獲取建案資料
+// 從後端獲取建案資料，支援 B2C 平台展示
 const fetchProperties = async (page) => {
   isLoading.value = true;
   error.value = null;
@@ -154,14 +154,14 @@ const fetchProperties = async (page) => {
   }
 };
 
-// 切換頁面
+// 切換頁面，優化用戶瀏覽體驗
 const changePage = (page) => {
   if (page > 0 && page <= totalPages.value) {
     fetchProperties(page);
   }
 };
 
-// 格式化價格顯示
+// 格式化價格顯示，符合台灣市場習慣
 const formatPrice = (price) => {
   return parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
@@ -175,7 +175,7 @@ onMounted(() => {
 
 ### 後端：建案控制器（Laravel）
 
-此代碼位於 `backend-laravel/app/Http/Controllers/PropertyController.php`，展示如何處理建案列表和詳情 API。
+位於 `backend-laravel/app/Http/Controllers/PropertyController.php`，展示如何處理建案列表和詳情 API，支援 B2B 訂閱制客戶。
 
 ```php
 <?php
@@ -190,7 +190,7 @@ use Illuminate\Support\Facades\Log;
 class PropertyController extends Controller
 {
     /**
-     * 獲取建案列表，支援分頁
+     * 獲取建案列表，支援分頁，適用於 B2B SaaS 平台
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -221,7 +221,7 @@ class PropertyController extends Controller
     }
 
     /**
-     * 獲取單一建案詳情
+     * 獲取單一建案詳情，支援 B2C 平台展示
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -243,7 +243,7 @@ class PropertyController extends Controller
 
 ### AI 服務：房價預測（FastAPI）
 
-此代碼位於 `ai-services-fastapi/routers/predict.py`，展示房價預測邏輯（模擬或使用 XGBoost 模型）。
+位於 `ai-services-fastapi/routers/predict.py`，展示 AI 驅動的房價預測邏輯，吸引 BitStone 的技術團隊。
 
 ```python
 from fastapi import APIRouter, HTTPException
@@ -256,7 +256,7 @@ import logging
 # 配置日誌記錄
 logger = logging.getLogger(__name__)
 
-# 定義請求數據模型
+# 定義請求數據模型，支援結構化輸入
 class PredictionRequest(BaseModel):
     area: float  # 房屋面積（坪）
     address: str  # 地址或區域
@@ -271,7 +271,7 @@ router = APIRouter(
     tags=["房價預測"]
 )
 
-# 載入預訓練模型
+# 載入預訓練模型，支援 AI 驅動功能
 MODEL_PATH = os.path.join(os.path.dirname(__file__), '../models/model_xgb.pkl')
 MODEL = None
 try:
@@ -286,7 +286,7 @@ except Exception as e:
 @router.post("/price", summary="預測房價")
 def predict_price(data: PredictionRequest):
     """
-    根據面積和地址預測房價
+    根據面積和地址預測房價，支援 B2B 與 B2C 應用
     - area: 房屋面積（坪）
     - address: 房屋地址或區域
     """
@@ -298,7 +298,7 @@ def predict_price(data: PredictionRequest):
 
     if MODEL:
         try:
-            # 根據地址模擬地理位置因子
+            # 根據地址模擬地理位置因子，適應台灣市場
             location_factor = 1.0
             is_near_mrt = 0
             if '大安區' in data.address or '信義區' in data.address:
@@ -320,7 +320,7 @@ def predict_price(data: PredictionRequest):
             base_price_per_ping = 150 if '大安區' in data.address or '信義區' in data.address else 80
             predicted_price_in_ten_thousand = data.area * base_price_per_ping
     else:
-        # 若無模型，使用模擬邏輯
+        # 若無模型，使用模擬邏輯，確保服務可用性
         base_price_per_ping = 80
         if '大安區' in data.address or '信義區' in data.address:
             base_price_per_ping = 150
@@ -338,7 +338,7 @@ def predict_price(data: PredictionRequest):
 
 ## 快速開始
 
-**注意**：本倉庫僅包含核心代碼（前端、AI 服務、資料庫結構等），不包含完整的 Laravel 框架代碼。使用者需自行安裝 Laravel 框架並將核心代碼整合至 Laravel 專案中。以下是完整的安裝和部署步驟。
+**注意**：本倉庫僅包含核心代碼（前端、AI 服務、資料庫結構、後端控制器等），不包含完整的 Laravel 框架代碼。使用者需自行安裝 Laravel 並將核心代碼整合至 Laravel 專案。以下為完整安裝與部署步驟，確保與 BitStone 的技術團隊對接時能快速展示成果。
 
 ### 前置條件
 
@@ -362,7 +362,7 @@ def predict_price(data: PredictionRequest):
      ```bash
      composer create-project laravel/laravel backend-laravel
      ```
-   - 將 `backend-laravel/` 目錄中的核心代碼（`app/`, `database/`, `routes/` 等）從倉庫複製到新創建的 Laravel 專案中：
+   - 將倉庫中的核心代碼（`backend-laravel/app/`, `backend-laravel/database/`, `backend-laravel/routes/` 等）複製到新創建的 Laravel 專案：
      ```bash
      cp -r backend-laravel/app backend-laravel/database backend-laravel/routes <您的Laravel專案路徑>/
      ```
@@ -379,20 +379,19 @@ def predict_price(data: PredictionRequest):
      ```bash
      cp .env.example .env
      ```
-   - 編輯 `.env` 檔案，設置以下關鍵變數：
-     - `API_KEY_SECRET`：後端 API 金鑰，用於驗證前端或外部請求。
-     - `AI_SERVICE_INTERNAL_API_KEY`：AI 服務內部金鑰，用於後端與 AI 服務通信。
-     - `OPENAI_API_KEY`：OpenAI API 金鑰（用於文案生成，若無則使用模擬邏輯）。
-     - `VITE_GOOGLE_MAPS_API_KEY`：Google Maps API 金鑰（用於地圖顯示）。
-     - 資料庫配置（範例）：
-       ```env
-       DB_CONNECTION=mysql
-       DB_HOST=db
-       DB_PORT=3306
-       DB_DATABASE=realestate
-       DB_USERNAME=root
-       DB_PASSWORD=your_password
-       ```
+   - 編輯 `.env` 檔案，設置以下關鍵變數（與 BitStone 的 SaaS 模式相容）：
+     ```env
+     API_KEY_SECRET=your_api_key_secret
+     AI_SERVICE_INTERNAL_API_KEY=your_ai_service_key
+     OPENAI_API_KEY=your_openai_api_key
+     VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+     DB_CONNECTION=mysql
+     DB_HOST=db
+     DB_PORT=3306
+     DB_DATABASE=realestate
+     DB_USERNAME=root
+     DB_PASSWORD=your_password
+     ```
 
 5. **安裝前端依賴**：
    - 進入 `frontend/` 目錄：
@@ -429,19 +428,19 @@ def predict_price(data: PredictionRequest):
 
 詳細的 REST API 規格請參考 [docs/api-design.md](docs/api-design.md)。主要端點包括：
 
-- **建案列表**：`GET /api/properties`（支援分頁）
-- **建案詳情**：`GET /api/properties/{id}`
-- **生成文案**：`POST /api/properties/{id}/generate-content`
-- **房價預測**：`POST /predict/price`（AI 服務）
+- **建案列表**：`GET /api/properties`（支援分頁，適用於 B2B 客戶）
+- **建案詳情**：`GET /api/properties/{id}`（支援 B2C 展示）
+- **生成文案**：`POST /api/properties/{id}/generate-content`（AI 驅動行銷）
+- **房價預測**：`POST /predict/price`（AI 服務，支援 B2B 與 B2C）
 - **健康檢查**：`GET /api/health`
 
-所有後端 API 請求需包含 `X-API-KEY` 標頭，AI 服務 API 需包含 `X-API-KEY`（內部金鑰）。
+所有後端 API 請求需包含 `X-API-KEY` 標頭，AI 服務 API 需包含 `X-API-KEY`（內部金鑰），確保安全且符合 BitStone 的合規需求。
 
 ## 專案結構
 
 ```
 smart-realestate-system/
-├── frontend/                     # Vue.js 前端
+├── frontend/                     # Vue.js 前端，支援 B2C 銷售平台
 │   ├── src/
 │   │   ├── components/          # Vue 組件
 │   │   ├── pages/               # 頁面（首頁、建案詳情、房價預測、關於）
@@ -459,7 +458,7 @@ smart-realestate-system/
 │   │   └── seeders/             # 資料庫填充
 │   ├── docker/                  # Nginx 和 Supervisor 配置
 │   └── routes/api.php           # API 路由
-├── ai-services-fastapi/          # FastAPI AI 服務
+├── ai-services-fastapi/          # FastAPI AI 服務，支援 AI 功能
 │   ├── routers/                 # API 路由（預測、文案生成）
 │   ├── models/                  # 機器學習模型
 │   ├── services/                # 業務邏輯
@@ -480,7 +479,7 @@ smart-realestate-system/
 ## 問題排除
 
 - **Mermaid 圖表無法渲染**：
-  - 確保 Mermaid 語法正確，節點名稱避免使用中文圓括號 `( )`。
+  - 確認節點名稱使用短橫線（`-`）而非中文圓括號 `( )`，以符合 GitHub Mermaid 語法規範。[](https://en.wikipedia.org/wiki/Property_technology)
   - 參考 [GitHub Mermaid 文件](https://docs.github.com/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#creating-mermaid-diagrams)。
 - **Laravel 框架缺失**：
   - 確認已安裝 Laravel 並將倉庫中的核心代碼（`app/`, `database/`, `routes/`）正確複製到 Laravel 專案。
@@ -502,10 +501,10 @@ smart-realestate-system/
 
 ## 未來擴展
 
-- **SaaS 模式**：支援訂閱計費（基礎版、專業版、企業版）、API 使用量計費及增值服務（如客製化報告）。
-- **新功能**：新增用戶認證（Laravel Sanctum）、高級分析儀表板、更多 AI 模型（如圖像生成）。
-- **效能優化**：快取（Redis）、負載均衡、水平擴展。
-- **安全性增強**：添加 OAuth2、速率限制、進階日誌記錄。
+- **SaaS 模式強化**：支援多層訂閱計費（基礎版、專業版、企業版），與 BitStone 的 B2B 模式對接。
+- **新功能**：新增用戶認證（Laravel Sanctum）、高級分析儀表板、VR/AR 線上賞屋，增強 B2C 平台吸引力。
+- **效能優化**：整合 Redis 快取、負載均衡，支援 BitStone 的高流量需求。
+- **區塊鏈整合**：探索區塊鏈技術用於土地產權記錄，與 BitStone 的創新技術方向一致。[](https://iaps.ord.nycu.edu.tw/%25E3%2580%2590article%25E3%2580%2591%25E6%259D%25B1%25E4%25BA%259E%25E9%2580%258F%25E8%25A6%2596%25E9%258F%25A1%25EF%25BC%259A%25E6%2588%25BF%25E5%259C%25B0%25E7%2594%25A2-x-%25E6%2595%25B8%25E4%25BD%258D%25E8%25BD%2589%25E5%259E%258B-%25E5%2586%2589%25E5%2586%2589%25E5%258D%2587%25E8%25B5%25B7%25E7%259A%2584-proptech/)
 
 ## 貢獻
 
@@ -518,7 +517,7 @@ smart-realestate-system/
 
 ## 聯繫方式
 
-如有問題或合作意向，請聯繫：  
+如有合作意向（技術整合、投資或白標解決方案），請聯繫：  
 📧 [contact@smart-realestate.com](mailto:contact@smart-realestate.com)
 
 ## 授權
