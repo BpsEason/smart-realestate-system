@@ -30,7 +30,7 @@ graph TD
     B -->|GET /api/properties| C[後端服務-Laravel]
     C -->|SELECT FROM properties| D[MySQL-資料庫]
     B -->|POST /predict/price| E[AI服務-FastAPI]
-    C -->|POST /properties/{id}/generate-content| E
+    C -->|POST /properties/id/generate-content| E
     E -->|呼叫外部API| F[外部AI服務-OpenAI]
     E -->|返回JSON| C
     C -->|返回JSON| B
