@@ -22,21 +22,21 @@
 
 ## 系統架構
 
-本系統採用模組化微服務架構，所有組件運行於 Docker 容器中，確保環境一致性和可擴展性。以下是系統互動流程圖：
+本系統採用模組化微服務架構，所有組件運行於 Docker 容器中，確保環境一致性和可擴展性。以下是修正後的系統互動流程圖（避免中文圓括號）：
 
 ```mermaid
 graph TD
-    A[使用者 (瀏覽器)] -- GET / (Web 介面) --> B(前端服務 Vue.js/Nginx)
-    B -- GET /api/properties --> C(後端服務 Laravel)
-    C -- SELECT FROM properties --> D[MySQL 資料庫]
-    B -- POST /predict/price --> E(AI 服務 FastAPI)
-    C -- POST /properties/{id}/generate-content --> E
-    E -- 呼叫外部 API --> F[外部 AI 服務 (e.g., OpenAI)]
-    E -- 返回 JSON --> C
-    C -- 返回 JSON --> B
-    B -- 渲染頁面 --> A
+    A[使用者-瀏覽器] -->|GET / Web介面| B[前端服務-Vue.js/Nginx]
+    B -->|GET /api/properties| C[後端服務-Laravel]
+    C -->|SELECT FROM properties| D[MySQL-資料庫]
+    B -->|POST /predict/price| E[AI服務-FastAPI]
+    C -->|POST /properties/{id}/generate-content| E
+    E -->|呼叫外部API| F[外部AI服務-OpenAI]
+    E -->|返回JSON| C
+    C -->|返回JSON| B
+    B -->|渲染頁面| A
 
-    subgraph 容器化環境 (Docker Compose)
+    subgraph 容器化環境-DockerCompose
         B
         C
         D
@@ -338,9 +338,15 @@ def predict_price(data: PredictionRequest):
 
 ## 快速開始
 
+**注意**：本倉庫僅包含核心代碼（前端、AI 服務、資料庫結構等），不包含完整的 Laravel 框架代碼。使用者需自行安裝 Laravel 框架並將核心代碼整合至 Laravel 專案中。以下是完整的安裝和部署步驟。
+
 ### 前置條件
 
 - **Docker Desktop**：包含 Docker Engine 和 Docker Compose。[下載 Docker Desktop](https://docs.docker.com/get-docker/)。
+- **PHP 8.3**：用於運行 Laravel。[安裝 PHP](https://www.php.net/downloads.php)。
+- **Composer**：PHP 依賴管理工具。[安裝 Composer](https://getcomposer.org/download/)。
+- **Node.js 20.x**：用於前端 Vite 構建。[安裝 Node.js](https://nodejs.org/)。
+- **Python 3.10**：用於 FastAPI AI 服務。[安裝 Python](https://www.python.org/downloads/)。
 - 確保 Docker 守護進程正在運行。
 
 ### 安裝與部署
@@ -351,7 +357,24 @@ def predict_price(data: PredictionRequest):
    cd smart-realestate-system
    ```
 
-2. **配置環境變數**：
+2. **安裝 Laravel 框架**：
+   - 創建一個新的 Laravel 專案（若尚未存在）：
+     ```bash
+     composer create-project laravel/laravel backend-laravel
+     ```
+   - 將 `backend-laravel/` 目錄中的核心代碼（`app/`, `database/`, `routes/` 等）從倉庫複製到新創建的 Laravel 專案中：
+     ```bash
+     cp -r backend-laravel/app backend-laravel/database backend-laravel/routes <您的Laravel專案路徑>/
+     ```
+
+3. **安裝 Laravel 依賴**：
+   - 進入 Laravel 專案目錄：
+     ```bash
+     cd <您的Laravel專案路徑>
+     composer install
+     ```
+
+4. **配置環境變數**：
    - 複製 `.env.example` 為 `.env`：
      ```bash
      cp .env.example .env
@@ -361,18 +384,43 @@ def predict_price(data: PredictionRequest):
      - `AI_SERVICE_INTERNAL_API_KEY`：AI 服務內部金鑰，用於後端與 AI 服務通信。
      - `OPENAI_API_KEY`：OpenAI API 金鑰（用於文案生成，若無則使用模擬邏輯）。
      - `VITE_GOOGLE_MAPS_API_KEY`：Google Maps API 金鑰（用於地圖顯示）。
+     - 資料庫配置（範例）：
+       ```env
+       DB_CONNECTION=mysql
+       DB_HOST=db
+       DB_PORT=3306
+       DB_DATABASE=realestate
+       DB_USERNAME=root
+       DB_PASSWORD=your_password
+       ```
 
-3. **建構並啟動 Docker 容器**：
-   ```bash
-   docker-compose up --build -d
-   ```
+5. **安裝前端依賴**：
+   - 進入 `frontend/` 目錄：
+     ```bash
+     cd frontend
+     npm install
+     ```
 
-4. **執行 Laravel 資料庫遷移與填充**：
-   ```bash
-   docker-compose exec backend php artisan migrate --seed
-   ```
+6. **安裝 AI 服務依賴**：
+   - 進入 `ai-services-fastapi/` 目錄：
+     ```bash
+     cd ai-services-fastapi
+     pip install -r requirements.txt
+     ```
 
-5. **訪問應用程式**：
+7. **建構並啟動 Docker 容器**：
+   - 返回專案根目錄，確保 `docker-compose.yml` 配置正確，然後運行：
+     ```bash
+     docker-compose up --build -d
+     ```
+
+8. **執行 Laravel 資料庫遷移與填充**：
+   - 在 Laravel 專案目錄中運行：
+     ```bash
+     docker-compose exec backend php artisan migrate --seed
+     ```
+
+9. **訪問應用程式**：
    - 前端：`http://localhost:3000`
    - 後端 API：`http://localhost:8000/api`
    - AI 服務 API：`http://localhost:8001`
@@ -401,7 +449,7 @@ smart-realestate-system/
 │   │   ├── router/              # Vue Router 配置
 │   │   ├── services/            # API 服務
 │   │   └── style.css            # Tailwind CSS 樣式
-├── backend-laravel/              # Laravel 後端
+├── backend-laravel/              # Laravel 核心代碼（需整合至完整 Laravel 專案）
 │   ├── app/
 │   │   ├── Models/              # Eloquent 模型
 │   │   ├── Http/Controllers/    # API 控制器
@@ -431,6 +479,12 @@ smart-realestate-system/
 
 ## 問題排除
 
+- **Mermaid 圖表無法渲染**：
+  - 確保 Mermaid 語法正確，節點名稱避免使用中文圓括號 `( )`。
+  - 參考 [GitHub Mermaid 文件](https://docs.github.com/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#creating-mermaid-diagrams)。
+- **Laravel 框架缺失**：
+  - 確認已安裝 Laravel 並將倉庫中的核心代碼（`app/`, `database/`, `routes/`）正確複製到 Laravel 專案。
+  - 運行 `composer install` 以安裝 Laravel 依賴。
 - **服務啟動失敗**：
   - 檢查 Docker 日誌：`docker-compose logs <service-name>`。
   - 確保埠（3000、8000、8001、3306）未被佔用。
