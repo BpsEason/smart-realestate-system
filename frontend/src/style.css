@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-50 text-gray-800;
+  font-family: 'Inter', sans-serif;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+}
+
+.btn-secondary {
+  @apply text-gray-700 bg-white border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+/* 統一錯誤訊息樣式 */
+.error-alert {
+  @apply bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md;
+}
+
+/* 統一卡片圖片樣式 */
+.card img {
+  @apply w-full h-48 object-cover bg-gray-100 min-h-[12rem];
+}
+
+.pagination-controls .btn-pagination {
+  @apply px-3 py-1 text-sm font-medium border border-gray-300 rounded-md transition-colors duration-150;
+}
+
+.pagination-controls .btn-pagination:disabled {
+  @apply cursor-not-allowed bg-gray-100 text-gray-400;
+}
+
+.pagination-controls .btn-pagination.active {
+  @apply bg-blue-600 text-white border-blue-600;
+}

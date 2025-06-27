@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  # Vue.js Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80" # Map container port 80 to host port 3000
+    volumes:
+      - ./frontend:/app # Mount local frontend code for hot-reloading in development
+    networks:
+      - smart_proptech_network
+    environment:
+      - VITE_API_BASE_URL=http://backend:8000/api # Set frontend API base URL to point to backend service
+      - VITE_AI_API_BASE_URL=http://ai-service:8001 # Set frontend AI service base URL
+      # 從 .env.example 讀取 Google Maps API Key
+      - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY}
+    healthcheck: # Health check to ensure service availability
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s # Allow service to initialize before health checks start
+
+  # Laravel Backend Service
+  backend:
+    build:
+      context: ./backend-laravel
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80" # Map container port 80 to host port 8000
+    volumes:
+      - ./backend-laravel:/var/www/html # Mount local backend code
+    networks:
+      - smart_proptech_network
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=real_estate_db
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+      - APP_KEY=base64:$(php -r "echo base64_encode(random_bytes(32));") # Generate Laravel app key
+      - API_KEY_SECRET=${API_KEY_SECRET} # 從 .env.example 讀取後端 API 金鑰
+      - AI_SERVICE_URL=http://ai-service:8001
+      - AI_SERVICE_INTERNAL_API_KEY=${AI_SERVICE_INTERNAL_API_KEY} # 從 .env.example 讀取 AI 服務內部金鑰
+    depends_on:
+      db:
+        condition: service_healthy
+      ai-service:
+        condition: service_started # AI service might not be immediately healthy for all its sub-functions, but needs to be running.
+    healthcheck: # Health check for Laravel backend
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"] # Call custom health check endpoint
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s # Give Laravel time to warm up and migrate if needed
+
+  # FastAPI AI Service
+  ai-service:
+    build:
+      context: ./ai-services-fastapi
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001" # Map container port 8001 to host port 8001
+    volumes:
+      - ./ai-services-fastapi:/app # Mount local AI service code
+    networks:
+      - smart_proptech_network
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY} # 從 .env.example 讀取 OpenAI API 金鑰
+      - AI_SERVICE_INTERNAL_API_KEY=${AI_SERVICE_INTERNAL_API_KEY} # 從 .env.example 讀取 AI 服務內部金鑰
+    healthcheck: # Health check for FastAPI AI service
+      test: ["CMD", "curl", "-f", "http://localhost:8001/"] # Simple root endpoint check
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s # Give FastAPI time to load models if any
+
+  # MySQL Database Service
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306" # Map container port 3306 to host port 3306
+    volumes:
+      - db_data:/var/lib/mysql # Persistent data volume
+    networks:
+      - smart_proptech_network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=real_estate_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    healthcheck: # Health check for MySQL database
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uuser", "-ppassword"] # Ping database
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  smart_proptech_network:
+    driver: bridge
+
+volumes:
+  db_data: # Define the volume for MySQL data persistence

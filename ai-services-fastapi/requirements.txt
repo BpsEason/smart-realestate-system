@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+scikit-learn
+xgboost
+openai # For content generation, if using OpenAI API
+python-dotenv # For loading environment variables from .env file
+joblib # For loading models
