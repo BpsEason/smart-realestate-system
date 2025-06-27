@@ -25,23 +25,27 @@
 本系統採用微服務架構，所有組件運行於 Docker 容器中，確保環境一致性與可擴展性。以下是系統互動流程圖：
 
 ```mermaid
-graph TD
-    A[使用者-瀏覽器] -->|GET / Web介面| B[前端服務-Vue.js-Nginx]
-    B -->|GET /api/properties| C[後端服務-Laravel]
-    C -->|SELECT FROM properties| D[MySQL-資料庫]
-    B -->|POST /predict/price| E[AI服務-FastAPI]
-    C -->|POST /properties/id/generate-content| E
-    E -->|呼叫外部API| F[外部AI服務-OpenAI]
-    E -->|返回JSON| C
-    C -->|返回JSON| B
-    B -->|渲染頁面| A
+flowchart TD
+    U[使用者-瀏覽器] -->|瀏覽建案/預測價格| VUE[前端-Vue.js]
+    VUE -->|GET /api/properties| LARAVEL[後端-Laravel]
+    LARAVEL -->|查詢建案資料| DB[(MySQL-資料庫)]
+    VUE -->|POST /predict/price| FASTAPI[AI服務-FastAPI]
+    LARAVEL -->|POST /properties/id/generate-content| FASTAPI
+    FASTAPI -->|XGBoost 預測/GPT 文案生成| AIENGINE[AI模型推論服務]
+    FASTAPI -->|返回 JSON| LARAVEL
+    LARAVEL -->|返回 JSON| VUE
+    VUE -->|呈現結果| U
 
     subgraph 容器化環境-DockerCompose
-        B
-        C
-        D
-        E
+        VUE
+        LARAVEL
+        DB
+        FASTAPI
+        AIENGINE
     end
+
+    classDef service fill:#f0f8ff,stroke:#4682b4,stroke-width:2px;
+    class VUE,LARAVEL,FASTAPI,AIENGINE,DB service
 ```
 
 ## 關鍵代碼範例
