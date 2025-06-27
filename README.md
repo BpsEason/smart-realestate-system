@@ -544,4 +544,100 @@ API 金鑰驗證透過自定義的 `ApiKeyMiddleware` 實現，應用於需要�
 - **多租戶架構**：選擇共享 Schema（透過 `tenant_id` 區分）或獨立資料庫，確保資料隔離。
 - **權限與配額**：實現 RBAC 與 API 限流，支援不同訂閱層級。
 - **計費整合**：使用 Stripe 或 Paddle 處理訂閱與發票。
-- **可配置性**：提供動態表單或儀表板，滿足企業自定義
+- **可配置性**：提供動態表單或儀表板，滿足企業自定義需求。
+- **安全性與合規**：支援數據加密、日誌審計，符合 GDPR 等規範。
+- **擴展性**：引入負載均衡與消息隊列，應對高流量。
+
+### 如何確保程式碼品質與可維護性？
+
+- **最佳實踐**：遵循 MVC（Laravel）、組件化（Vue.js）、RESTful（FastAPI）規範。
+- **模組化**：清晰的目錄結構與職責分離。
+- **註解與日誌**：詳細註解核心邏輯，記錄錯誤與關鍵操作。
+- **工具**：使用 ESLint、PHP-CS-Fixer 確保程式碼風格一致。
+- **環境管理**：透過 `.env` 管理敏感資訊，避免硬編碼。
+
+### 未來擴展計劃有哪些？
+
+- **功能擴展**：
+  - 引入 Laravel Sanctum 實現用戶認證。
+  - 開發高級分析儀表板，展示市場趨勢與用戶行為。
+  - 整合 VR/AR 線上賞屋，提升 B2C 體驗。
+  - 實現基於機器學習的房產推薦系統。
+- **技術優化**：
+  - 使用 Redis 快取與消息隊列（如 RabbitMQ）提升性能。
+  - 配置負載均衡與自動擴展，支援高併發。
+- **AI 增強**：
+  - 整合多源數據（政府數據、社群媒體）豐富模型。
+  - 建立 MLOps 流水線，實現模型自動化訓練與部署。
+
+## 專案結構
+
+```
+smart-realestate-system/
+├── frontend/                     # Vue.js 前端，支援 B2C 銷售平台
+│   ├── src/
+│   │   ├── components/          # Vue 組件
+│   │   ├── pages/               # 頁面（首頁、建案詳情、房價預測、關於）
+│   │   ├── assets/              # 靜態資源
+│   │   ├── router/              # Vue Router 配置
+│   │   ├── services/            # API 服務
+│   │   └── style.css            # Tailwind CSS 樣式
+├── backend-laravel/              # Laravel 核心代碼（需整合至完整 Laravel 專案）
+│   ├── app/
+│   │   ├── Models/              # Eloquent 模型
+│   │   ├── Http/Controllers/    # API 控制器
+│   │   └── Http/Middleware/     # 自定義中間件
+│   ├── database/
+│   │   ├── migrations/          # 資料庫遷移
+│   │   └── seeders/             # 資料庫填充
+│   ├── docker/                  # Nginx 和 Supervisor 配置
+│   └── routes/api.php           # API 路由
+├── ai-services-fastapi/          # FastAPI AI 服務，支援 AI 功能
+│   ├── routers/                 # API 路由（預測、文案生成）
+│   ├── models/                  # 機器學習模型
+│   ├── services/                # 業務邏輯
+│   ├── docs/                    # 訓練腳本等文件
+│   └── main.py                  # FastAPI 主應用
+├── database/                     # MySQL 資料庫
+│   ├── schema.sql               # 資料庫結構
+│   └── Dockerfile               # MySQL Dockerfile
+├── docs/                         # 文件
+│   ├── architecture.md          # 系統架構
+│   ├── api-design.md            # API 規格
+│   ├── setup.md                 # 部署指南
+│   └── examples/                # 示例數據
+├── docker-compose.yml            # Docker Compose 配置
+└── .env.example                  # 環境變數範例
+```
+
+## 問題排除
+
+- **Mermaid 圖表無法渲染**：
+  - 確認節點名稱使用短橫線（`-`）而非中文圓括號 `( )` 或大括號 `{}`，以符合 GitHub Mermaid 語法規範。
+  - 參考 [GitHub Mermaid 文件](https://docs.github.com/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#creating-mermaid-diagrams)。
+- **Laravel 框架缺失**：
+  - 確認已安裝 Laravel 並將倉庫中的核心代碼（`app/`, `database/`, `routes/`）正確複製到 Laravel 專案。
+  - 運行 `composer install` 以安裝 Laravel 依賴。
+- **服務啟動失敗**：
+  - 檢查 Docker 日誌：`docker-compose logs <service-name>`。
+  - 確保埠（3000、8000、8001、3306）未被佔用。
+- **資料庫連線錯誤**：
+  - 確認 `.env` 中的 `DB_HOST=db` 和其他資料庫設置正確。
+  - 檢查 `db` 服務是否為「healthy」：`docker-compose ps`。
+- **API 請求失敗**：
+  - 檢查 `X-API-KEY` 是否正確設置。
+  - 確認 CORS 配置（`ai-services-fastapi/main.py`）是否允許前端域名。
+- **AI 服務錯誤**：
+  - 檢查 `OPENAI_API_KEY` 是否有效。
+  - 確認模型檔案（`ai-services-fastapi/models/model_xgb.pkl`）是否存在。
+
+詳細問題排除請參考 [docs/setup.md](docs/setup.md)。
+
+## 貢獻
+
+歡迎提交問題報告或功能建議！請遵循以下步驟：
+
+1. Fork 專案並建立您的分支（`git checkout -b feature/your-feature`）。
+2. 提交變更（`git commit -m "Add your feature"`）。
+3. 推送到分支（`git push origin feature/your-feature`）。
+4. 建立 Pull Request。
